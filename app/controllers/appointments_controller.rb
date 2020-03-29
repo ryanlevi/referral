@@ -7,6 +7,17 @@ class AppointmentsController < ApplicationController
     else
       appointments = Appointment.all
     end
+    l = 0
+    p = 0
+    if params[:length]
+      l = params[:length].to_i
+    end
+    if params[:page]
+      p = params[:page].to_i
+    end
+    page_start = p*l
+    page_end = page_start + l
+    appointments = appointments[page_start...page_end]
     render json: appointments.as_json(only: [:id, :title, :description, :start_time, :duration_in_minutes], include: {
       customer: {only: [:username, :id]},
       client: {only: [:username, :id]}
