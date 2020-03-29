@@ -1,6 +1,7 @@
 # README
 
 created using Rails 6.0.2.2 and ruby 2.6.3
+using sqlite because it's the default rails db and a relational db makes sense for this type of project (high consistency)
 
 to run:
 rake db:migrate
