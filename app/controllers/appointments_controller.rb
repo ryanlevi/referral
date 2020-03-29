@@ -1,8 +1,12 @@
 class AppointmentsController < ApplicationController
-  @appointments = Appointment.all
+
 
   def index
-    appointments = Appointment.all
+    if params[:active] == '1'
+      appointments = Appointment.where('start_time > ?', DateTime.now)
+    else
+      appointments = Appointment.all
+    end
     render json: appointments.as_json(only: [:id, :title, :description, :start_time, :duration_in_minutes], include: {
       customer: {only: [:username, :id]},
       client: {only: [:username, :id]}
@@ -31,6 +35,11 @@ class AppointmentsController < ApplicationController
     appointment = Appointment.find params[:id]
     appointment_title = appointment.title
     appointment.destroy
-    render json: "#{appointment_title} deleted"
+    render json: "#{appointment_title} deleted."
+  end
+
+  def destroy_all
+    appointments = Appointment.destroy_all
+    render json: "Deleted all appointments."
   end
 end
